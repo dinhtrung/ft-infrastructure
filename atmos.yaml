@@ -53,7 +53,7 @@ stacks:
     - "catalog/**/*"
     - "**/*globals*"
   # Can also be set using `ATMOS_STACKS_NAME_PATTERN` ENV var
-  name_pattern: "{tenant}-{environment}-{stage}"
+  name_pattern: "{namespace}-{environment}-{stage}"
 
 workflows:
   # Can also be set using `ATMOS_WORKFLOWS_BASE_PATH` ENV var, or `--workflows-dir` command-line arguments

@@ -1,0 +1,10 @@
+components:
+  terraform:
+    vpc:
+      vars:
+        subnet_type_tag_key: "example.net/subnet/type"
+        vpc_flow_logs_enabled: true
+        vpc_flow_logs_bucket_environment_name: "uw2"
+        vpc_flow_logs_bucket_stage_name: "audit"
+        vpc_flow_logs_traffic_type: "ALL"
+        cidr_block: "10.111.0.0/18"
