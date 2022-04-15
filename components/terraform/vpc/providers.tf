@@ -11,6 +11,7 @@ provider "aws" {
 module "iam_roles" {
   source = "../account-map/modules/iam-roles"
   stage  = var.stage
+  region = var.region
 }
 
 variable "import_role_arn" {

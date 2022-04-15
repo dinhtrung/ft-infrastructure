@@ -2,7 +2,9 @@ import:
   - globals/ue2-globals
   # All catalog defaults
   - catalog/terraform/tfstate-backend
-  - catalog/terraform/account
+  - catalog/terraform/account # FIXME: remove all account and organization and try again...
+  - catalog/terraform/account-map
+  - catalog/terraform/iam-primary-roles
   - catalog/terraform/vpc
 
 # Global variables
@@ -11,6 +13,12 @@ vars:
 
 terraform:
   vars: {}
+  # This part only enable after we run the workflow.init step
+  # atmos workflow init -f ft
+  backend:
+    s3:
+      bucket: ft-ue2-dev-tfstate
+      dynamodb_table: ft-ue2-dev-tfstate-lock
 
 helmfile:
   vars: {}
@@ -28,4 +36,4 @@ components:
             name: root
     vpc:
       vars:
-        cidr_block: 10.10.0.0/18  
+        cidr_block: 10.10.0.0/18
