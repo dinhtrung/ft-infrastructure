@@ -7,11 +7,11 @@ resource "aws_ebs_encryption_by_default" "default" {
 # IAM Account Settings provides a CIS-compliant IAM Password Policy out of the box
 module "iam_account_settings" {
   source  = "cloudposse/iam-account-settings/aws"
-  version = "0.3.1"
+  version = "0.4.0"
 
   hard_expiry             = true
   minimum_password_length = var.minimum_password_length
-  maximum_password_age    = var.maximum_password_age
+  max_password_age    = var.maximum_password_age
 
   context = module.this.context
 }

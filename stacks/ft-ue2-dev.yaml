@@ -1,10 +1,6 @@
 import:
   - globals/ue2-globals
   # All catalog defaults
-  - catalog/terraform/tfstate-backend
-  - catalog/terraform/account # FIXME: remove all account and organization and try again...
-  - catalog/terraform/account-map
-  - catalog/terraform/iam-primary-roles
   - catalog/terraform/vpc
 
 # Global variables
@@ -26,14 +22,6 @@ helmfile:
 # Override values from defaults on catalog
 components:
   terraform:
-    account:
-      vars:
-        account_email_format: aws+%s@foxtech.com.vn
-        organization_enabled: false
-        organization_config:
-          root_account_stage_name: root
-          root_account:
-            name: root
     vpc:
       vars:
         cidr_block: 10.10.0.0/18

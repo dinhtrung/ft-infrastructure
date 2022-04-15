@@ -1,0 +1,112 @@
+import:
+  - globals/ue2-globals
+  - catalog/terraform/tfstate-backend
+  - catalog/terraform/iam-primary-roles
+  - catalog/terraform/iam-delegated-roles
+
+vars:
+  namespace: mgmt
+  stage: root
+  environment: gbl
+  region: us-east-1
+  tenant:
+terraform:
+  # This part only enable after we run the workflow.init step
+  # atmos workflow init -f ft
+  backend:
+    s3:
+      bucket: mgmt-gbl-root-tfstate
+      dynamodb_table: mgmt-gbl-root-tfstate-lock
+components:
+  terraform:
+    account:
+      vars:
+        account_email_format: aws_%s@foxtech.com.vn
+        account_iam_user_access_to_billing: DENY
+        organization_enabled: false
+        aws_service_access_principals:
+          - cloudtrail.amazonaws.com
+          - ram.amazonaws.com
+        enabled_policy_types:
+          - SERVICE_CONTROL_POLICY
+          - TAG_POLICY
+        organization_config:
+          root_account_stage_name: root
+          root_account:
+            name: root
+          accounts: []
+          organization:
+            service_control_policies: []
+          organizational_units:
+            - name: data
+              accounts:
+                # - name: proddata
+                #   tags:
+                #     eks: true
+                - name: devdata
+                  tags:
+                    eks: true
+                - name: stagedata
+                  tags:
+                    eks: true
+              service_control_policies:
+                - DenyLeavingOrganization
+            - name: platform
+              accounts:
+                # - name: prodplatform
+                #   tags:
+                #     eks: true
+                # - name: devplatform
+                #   tags:
+                #     eks: true
+                - name: stageplatform
+                  tags:
+                    eks: true
+              service_control_policies:
+                - DenyLeavingOrganization
+            - name: mgmt
+              accounts:
+                - name: demo
+                  tags:
+                    eks: true
+                - name: audit
+                  tags:
+                    eks: false
+                - name: corp
+                  tags:
+                    eks: true
+                - name: security
+                  tags:
+                    eks: false
+                # - name: identity
+                #   tags:
+                #     eks: false
+                - name: network
+                  tags:
+                    eks: false
+                - name: dns
+                  tags:
+                    eks: false
+                # - name: automation
+                #   tags:
+                #     eks: true
+              service_control_policies:
+                - DenyLeavingOrganization
+
+    # Account Map
+    account-map:
+      vars:
+        # If this is true, profile must be provided instead of role_arn in each backend.tf.json
+        # If this is false, role_arn must be provided instead of profile in each backend.tf.json
+        profiles_enabled: true
+        root_account_aws_name: "aws-root"
+        root_account_account_name: root
+        identity_account_account_name: security
+        dns_account_account_name: dns
+        audit_account_account_name: audit                
+
+    # Account Settings
+    account-settings:
+      vars:
+        minimum_password_length: 8
+        maximum_password_age: 30

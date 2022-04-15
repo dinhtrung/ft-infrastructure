@@ -1,0 +1,97 @@
+workflows:
+
+  init:
+    description: Prepare the s3 bucket for terraform state
+    steps:
+      - command: terraform plan tfstate-backend -s mgmt-gbl-root
+      - command: terraform apply tfstate-backend -s mgmt-gbl-root
+
+  root:
+    description: Run the entire account related stacks on new root account
+    steps:
+      - command: terraform generate backend account -s mgmt-gbl-root
+      - command: terraform plan account -s mgmt-gbl-root
+      - command: terraform apply account -s mgmt-gbl-root
+      - command: terraform plan account-map -s mgmt-gbl-root
+      - command: terraform apply account-map -s mgmt-gbl-root
+      - command: terraform plan account-settings -s mgmt-gbl-root
+      - command: terraform apply account-settings -s mgmt-gbl-root
+      - command: terraform plan iam-primary-roles -s mgmt-gbl-root
+     - command: terraform apply iam-primary-roles -s mgmt-gbl-root
+    # outputs:
+    #   tfstate_backend_dynamodb_table_arn = "arn:aws:dynamodb:us-east-2:765910153636:table/ft-ue2-dev-tfstate-lock"
+    #   tfstate_backend_dynamodb_table_id = "ft-ue2-dev-tfstate-lock"
+    #   tfstate_backend_dynamodb_table_name = "ft-ue2-dev-tfstate-lock"
+    #   tfstate_backend_s3_bucket_arn = "arn:aws:s3:::ft-ue2-dev-tfstate"
+    #   tfstate_backend_s3_bucket_domain_name = "ft-ue2-dev-tfstate.s3.amazonaws.com"
+    #   tfstate_backend_s3_bucket_id = "ft-ue2-dev-tfstate"
+
+  ft-plan-dev:
+    description: Run 'terraform plan' on ft-ue2-dev component in all stacks
+    steps:
+      - command: terraform plan test/test-component-override-3 -s tenant1-ue2-dev
+  # terraform-plan-test-component-override-2-all-stacks:
+  #   description: Run 'terraform plan' on 'test/test-component-override-2' component in all stacks
+  #   steps:
+  #     - command: terraform plan test/test-component-override-3 -s tenant1-ue2-dev
+  #     - command: terraform plan test/test-component-override-3 -s tenant1-ue2-staging
+  #     - command: terraform plan test/test-component-override-3 -s tenant1-ue2-prod
+  #     - command: terraform plan test/test-component-override-3 -s tenant2-ue2-dev
+  #     - command: terraform plan test/test-component-override-3 -s tenant2-ue2-staging
+  #     - command: terraform plan test/test-component-override-3 -s tenant2-ue2-prod
+
+  # terraform-plan-test-component-override-3-all-stacks:
+  #   description: Run 'terraform plan' on 'test/test-component-override-3' component in all stacks
+  #   steps:
+  #     - command: terraform plan test/test-component-override-3
+  #       # The step `stack` attribute overrides any stack in the `command` (if specified)
+  #       stack: tenant1-ue2-dev
+  #     - command: terraform plan test/test-component-override-3
+  #       stack: tenant1-ue2-staging
+  #     - command: terraform plan test/test-component-override-3
+  #       stack: tenant1-ue2-prod
+  #     - command: terraform plan test/test-component-override-3
+  #       stack: tenant2-ue2-dev
+  #     - command: terraform plan test/test-component-override-3
+  #       stack: tenant2-ue2-staging
+  #     - command: terraform plan test/test-component-override-3
+  #       stack: tenant2-ue2-prod
+
+  # terraform-plan-all-tenant1-ue2-dev:
+  #   description: Run 'terraform plan' on all components in the 'tenant1-ue2-dev' stack
+  #   # The workflow `stack` attribute overrides any stack in the `command` (if specified)
+  #   # The step `stack` attribute overrides any stack in the `command` (if specified) and the workflow `stack` attribute
+  #   stack: tenant1-ue2-dev
+  #   steps:
+  #     - command: echo Running terraform plan on the component 'test/test-component' in the stack 'tenant1-ue2-dev'
+  #       type: shell
+  #     - command: terraform plan test/test-component
+  #       # Type `atmos` is implicit, you don't have to specify it
+  #       # Other supported types: 'shell'
+  #       type: atmos
+  #     - command: echo Running terraform plan on the component 'test/test-component-override' in the stack 'tenant1-ue2-dev'
+  #       type: shell
+  #     - command: terraform plan test/test-component-override
+  #       type: atmos
+  #     - command: echo Running terraform plan on the component 'test/test-component-override-2' in the stack 'tenant1-ue2-dev'
+  #       type: shell
+  #     - command: terraform plan test/test-component-override-2
+  #       type: atmos
+  #     - command: echo Running terraform plan on the component 'test/test-component-override-3' in the stack 'tenant1-ue2-dev'
+  #       type: shell
+  #     - command: terraform plan test/test-component-override-3
+  #       type: atmos
+
+  # test-1:
+  #   description: Test workflow
+  #   steps:
+  #     - command: echo Command 1
+  #       type: shell
+  #     - command: echo Command 2
+  #       type: shell
+  #     - command: echo Command 3
+  #       type: shell
+  #     - command: echo Command 4
+  #       type: shell
+  #     - command: echo Command 5
+  #       type: shell
