@@ -3,9 +3,9 @@ locals {
   route53_enabled = local.enabled && (try(length(var.route53_zone_name), 0) > 0 || try(length(var.route53_zone_id), 0) > 0)
   ssh_key_enabled = local.enabled && var.ssh_key_enabled
 
-  vpc_id                 = module.vpc.outputs.vpc_id
-  vpc_private_subnet_ids = module.vpc.outputs.private_subnet_ids
-  vpc_public_subnet_ids  = module.vpc.outputs.public_subnet_ids
+  vpc_id                 = data.terraform_remote_state.vpc.outputs.vpc_id
+  vpc_private_subnet_ids = data.terraform_remote_state.vpc.outputs.private_subnet_ids
+  vpc_public_subnet_ids  = data.terraform_remote_state.vpc.outputs.public_subnet_ids
   vpc_subnet_ids         = var.associate_public_ip_address ? local.vpc_public_subnet_ids : local.vpc_private_subnet_ids
 
   bastion_subnet = slice(local.vpc_subnet_ids, 0, 1)

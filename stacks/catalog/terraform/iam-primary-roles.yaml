@@ -12,7 +12,7 @@ components:
         # AWS SSO assigns users to unpredictable roles, so we cannot whitelist them
         # and must by default allow other roles in the identity account to assume
         # the identity roles, relying on their own IAM restrictions to limit them.
-        default_assume_role_enabled: true
+        default_assume_role_enabled: false
 
         primary_account_id: "xxxxxxxxxxxx" # `identity` account
 

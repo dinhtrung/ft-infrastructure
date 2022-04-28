@@ -1,11 +1,14 @@
 import:
   - globals/ue2-globals
   # All catalog defaults
+  - catalog/terraform/tfstate-backend
   - catalog/terraform/vpc
+  - catalog/terraform/eks
+  - catalog/terraform/bastion
 
 # Global variables
 vars:
-  stage: dev
+  stage: devel
 
 terraform:
   vars: {}
@@ -13,8 +16,8 @@ terraform:
   # atmos workflow init -f ft
   backend:
     s3:
-      bucket: ft-ue2-dev-tfstate
-      dynamodb_table: ft-ue2-dev-tfstate-lock
+      bucket: ft-ue2-devel-tfstate
+      dynamodb_table: ft-ue2-devel-tfstate-lock
 
 helmfile:
   vars: {}
@@ -24,4 +27,6 @@ components:
   terraform:
     vpc:
       vars:
+        vpc_flow_logs_enabled: false
+        vpc_flow_logs_bucket_environment_name: "ue2"
         cidr_block: 10.10.0.0/18

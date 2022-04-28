@@ -1,0 +1,7 @@
+components:
+  terraform:
+    dns-delegated:
+      vars:
+        zone_config:
+          - subdomain: devel
+            zone_name: foxtech.vn

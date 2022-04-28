@@ -22,7 +22,8 @@ locals {
 }
 
 module "eks_node_group" {
-  source  = "git::https://github.com/cloudposse/terraform-aws-eks-node-group.git?ref=tags/0.13.0"
+  source  = "cloudposse/eks-node-group/aws"
+  version = "0.28.0"
   enabled = local.enabled
 
   attributes = length(var.availability_zone) > 0 ? flatten([module.this.attributes, local.az_attribute]) : module.this.attributes

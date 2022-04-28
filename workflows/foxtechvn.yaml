@@ -16,8 +16,10 @@ workflows:
       - command: terraform apply account-map -s mgmt-gbl-root
       - command: terraform plan account-settings -s mgmt-gbl-root
       - command: terraform apply account-settings -s mgmt-gbl-root
+      - command: terraform plan sso -s mgmt-gbl-root
+      - command: terraform apply sso -s mgmt-gbl-root
       - command: terraform plan iam-primary-roles -s mgmt-gbl-root
-     - command: terraform apply iam-primary-roles -s mgmt-gbl-root
+      - command: terraform apply iam-primary-roles -s mgmt-gbl-root
     # outputs:
     #   tfstate_backend_dynamodb_table_arn = "arn:aws:dynamodb:us-east-2:765910153636:table/ft-ue2-dev-tfstate-lock"
     #   tfstate_backend_dynamodb_table_id = "ft-ue2-dev-tfstate-lock"
@@ -26,10 +28,11 @@ workflows:
     #   tfstate_backend_s3_bucket_domain_name = "ft-ue2-dev-tfstate.s3.amazonaws.com"
     #   tfstate_backend_s3_bucket_id = "ft-ue2-dev-tfstate"
 
-  ft-plan-dev:
+  ft-security:
     description: Run 'terraform plan' on ft-ue2-dev component in all stacks
     steps:
-      - command: terraform plan test/test-component-override-3 -s tenant1-ue2-dev
+      - command: terraform plan vpc -s ft-ue2-dev
+      - command: terraform apply vpc -s ft-ue2-dev
   # terraform-plan-test-component-override-2-all-stacks:
   #   description: Run 'terraform plan' on 'test/test-component-override-2' component in all stacks
   #   steps:

@@ -1,0 +1,19 @@
+components:
+  terraform:
+    dns-primary:
+      vars:
+        domain_names:
+          - foxtech.vn
+        record_config:
+          - root_zone: foxtech.vn
+            name: ""
+            type: A
+            ttl: 60
+            records:
+              - 139.180.191.72
+          - root_zone: foxtech.vn
+            name: www.
+            type: CNAME
+            ttl: 60
+            records:
+              - foxtech.vn

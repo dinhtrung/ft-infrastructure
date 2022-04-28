@@ -48,7 +48,7 @@ data "aws_iam_policy_document" "saml_provider_assume" {
       type = "Federated"
 
       # Loop over the IDPs from the `sso` component
-      identifiers = [for name, arn in data.terraform_remote_state.sso.outputs.saml_provider_arn : arn]
+      identifiers = [for name, arn in data.terraform_remote_state.sso.outputs.saml_provider_arns : arn]
     }
 
     condition {
@@ -113,7 +113,7 @@ resource "aws_iam_role" "default" {
   description          = local.roles_config[each.key]["role_description"]
   assume_role_policy   = data.aws_iam_policy_document.aggregated[each.key].json
   max_session_duration = var.iam_role_max_session_duration
-  tags                 = merge(module.this.tags, map("Name", local.role_name_map[each.key]))
+  tags                 = merge(module.this.tags, tomap({ "Name" = local.role_name_map[each.key] }))
 }
 
 resource "aws_iam_role_policy_attachment" "default" {

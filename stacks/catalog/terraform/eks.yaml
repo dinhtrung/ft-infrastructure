@@ -1,0 +1,25 @@
+components:
+  terraform:
+    eks:
+      vars:
+        cluster_kubernetes_version: "1.22"
+        region_availability_zones: ["us-east-1b", "us-east-1c", "us-east-1d"]
+#        spotinst_instance_profile: example-gbl-dev-spotinst-worker
+#        map_additional_worker_roles: ["arn:aws:iam::xxxxxxxxxx:role/example-ue1-dev-spotinst-worker"]
+        public_access_cidrs: ["72.107.0.0/24"]
+        spotinst_oceans:
+          main: &standard_node_group
+            desired_group_size: 1
+            max_group_size: 10
+            min_group_size: 1
+
+            # Can only set one of ami_release_version or kubernetes_version
+            # Leave both null to use latest AMI for Cluster Kubernetes version
+            kubernetes_version: null   # use cluster Kubernetes version
+            ami_release_version: null  # use latest AMI for Kubernetes version
+
+            attributes: null
+            disk_size: 100
+            instance_types: null
+            ami_type: null # use "AL2_x86_64" for standard instances, "AL2_x86_64_GPU" for GPU instances
+            tags: null

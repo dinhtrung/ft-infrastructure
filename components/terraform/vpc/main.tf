@@ -2,14 +2,16 @@ locals {
   # The usage of the specific kubernetes.io/cluster/* resource tags below are required
   # for EKS and Kubernetes to discover and manage networking resources
   # https://www.terraform.io/docs/providers/aws/guides/eks-getting-started.html#base-vpc-networking
-  tags = map(format("kubernetes.io/cluster/%s-%s-%s-eks-cluster", module.this.namespace, module.this.environment, module.this.stage), "shared")
+  tags = tomap({
+    format("kubernetes.io/cluster/%s-%s-%s-eks-cluster", module.this.namespace, module.this.environment, module.this.stage) = "shared"
+  })
 
   availability_zones = length(var.availability_zones) > 0 ? var.availability_zones : var.region_availability_zones
 
   max_subnet_count = (
-    var.max_subnet_count > 0 ? var.max_subnet_count : (
-      length(var.region_availability_zones) > 0 ? length(var.region_availability_zones) : length(var.availability_zones)
-    )
+  var.max_subnet_count > 0 ? var.max_subnet_count : (
+  length(var.region_availability_zones) > 0 ? length(var.region_availability_zones) : length(var.availability_zones)
+  )
   )
 }
 

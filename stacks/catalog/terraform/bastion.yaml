@@ -1,0 +1,36 @@
+components:
+  terraform:
+    bastion-ssm:
+      component: bastion
+      vars:
+        name: bastion-ssm
+        enabled: true
+        ssm_enabled: true # default
+        ssh_key_enabled: false # default
+        associate_public_ip_address: false # default — this deploys the bastion to a private subnet
+        custom_bastion_hostname: bastion-ssm
+        security_group_rules:
+          - type        : "egress"
+            from_port   : 0
+            to_port     : 0
+            protocol    : -1
+            cidr_blocks : ["0.0.0.0/0"]
+    bastion:
+      vars:
+        name: bastion-pub
+        enabled: true
+        ssm_enabled: true # default
+        ssh_key_enabled: true # default
+        associate_public_ip_address: true # default — this deploys the bastion to a private subnet
+        custom_bastion_hostname: bastion-pub
+        security_group_rules:
+          - type        : "egress"
+            from_port   : 0
+            to_port     : 0
+            protocol    : -1
+            cidr_blocks : ["0.0.0.0/0"]
+          - type: "ingress"
+            from_port: 22
+            to_port: 22
+            protocol: -1
+            cidr_blocks: [ "0.0.0.0/0" ]

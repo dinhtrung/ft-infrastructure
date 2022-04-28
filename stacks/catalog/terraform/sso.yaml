@@ -1,0 +1,6 @@
+components:
+  terraform:
+    sso:
+      vars:
+        saml_providers:
+          okta: metadata.xml

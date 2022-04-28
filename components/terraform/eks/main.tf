@@ -25,7 +25,8 @@ locals {
 }
 
 module "eks_cluster" {
-  source = "git::https://github.com/cloudposse/terraform-aws-eks-cluster.git?ref=tags/0.29.0"
+  source = "cloudposse/eks-cluster/aws"
+  version = "0.45.0"
 
   region     = var.region
   attributes = local.attributes

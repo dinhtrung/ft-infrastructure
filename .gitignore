@@ -1,0 +1,7 @@
+.terraform
+.terraform.lock.hcl
+components/**/*.tfvars.json
+components/**/backend.tf.json
+components/**/*.planfile
+terraform.tfstate.d
+/.idea
